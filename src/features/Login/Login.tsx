@@ -18,12 +18,19 @@ export default function Login() {
     event.preventDefault();
     setErrors({ password: null, username: null });
     const formData = new FormData(event.currentTarget);
-    const username = formData.get("username");
-    const password = formData.get("password");
+    const username = (formData.get("username") as string | undefined)?.trim();
+    const password = (formData.get("password") as string | undefined)?.trim();
     LoginSchema.parseAsync({ username, password })
       .then(() => {
         const Auth = new AuthService();
-        Auth.login();
+        const isLoggedIn = Auth.login({ username, password });
+        if (!isLoggedIn) {
+          setErrors({
+            password: "پسورد اشتباه است",
+            username: "نام کاربری اشتباه است",
+          });
+          return;
+        }
         window.location.reload();
       })
       .catch((e) => {
@@ -39,12 +46,11 @@ export default function Login() {
         });
       });
   };
-  console.log(errors);
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-5 md:p-0">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-4 rounded-xl shadow-2xl w-[500px] flex flex-col"
+        className="bg-white p-4 rounded-xl shadow-2xl w-full md:w-[500px] flex flex-col"
       >
         <h2 className="text-xl font-bold text-black">ورود </h2>
         <div className="flex flex-col my-10 gap-4">

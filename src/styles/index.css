@@ -17,3 +17,19 @@
 [role="button"] {
   cursor: pointer;
 }
+
+.scrollbar {
+  overflow-y: auto; /* Ensure scrollbar is visible */
+}
+
+.scrollbar::-webkit-scrollbar {
+  @apply w-2; /* Set scrollbar width */
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  @apply bg-gray-100; /* Style the track */
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full dark:bg-neutral-500; /* Style the thumb */
+}
